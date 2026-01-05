@@ -15,4 +15,14 @@ class Fee extends Model
         'semester',
         'status'
     ];
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id', 'id');
+    }
+
+    public function feeGroup()
+    {
+        return $this->belongsTo(FeeGroup::class, 'fee_group_id', 'id');
+    }
 }

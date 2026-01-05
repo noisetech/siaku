@@ -22,4 +22,9 @@ class Departement extends Model
             set: fn(string $value) => strtolower($value)
         );
     }
+
+    public function faculty()
+    {
+        return $this->belongsTo(Faculty::class, 'faculty_id', 'id');
+    }
 }

@@ -13,4 +13,19 @@ class Operator extends Model
         'empployee_number',
         'name'
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function faculty()
+    {
+        return $this->belongsTo(Faculty::class, 'faculty_id', 'id');
+    }
+
+    public function departement(){
+        return $this->belongsTo(Departement::class, 'departement_id', 'id');
+    }
 }

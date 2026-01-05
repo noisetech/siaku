@@ -14,4 +14,20 @@ class Teacher extends Model
         'teacher_number',
         'academic_title',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+
+    public function faculty()
+    {
+        return $this->belongsTo(Faculty::class, 'faculty_id', 'id');
+    }
+
+    public function departement()
+    {
+        return $this->belongsTo(Departement::class, 'departement_id', 'id');
+    }
 }

@@ -14,4 +14,19 @@ class Grade extends Model
         'section',
         'category'
     ];
+
+    public function coruse()
+    {
+        return $this->belongsTo(Course::class, 'course_id', 'id');
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id', 'id');
+    }
+
+    public function classRoom()
+    {
+        return $this->belongsTo(Classroom::class, 'classroom_id', 'id');
+    }
 }
