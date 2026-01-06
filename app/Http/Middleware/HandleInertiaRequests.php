@@ -2,6 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\FeeStatus;
+use App\Http\Resources\UserSinggleResource;
+use App\Models\AcademicYear;
+use App\Models\FeeGroup;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -33,12 +37,24 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user() ? new UserSinggleResource($request->user()) : null,
             ],
-            'ziggy' => fn () => [
+            'flashMessage' => fn() => [
+                'type' => $request->session()->get('type'),
+                'message' => $request->session()->get('message'),
+            ],
+            'ziggy' => fn() => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
+            'academic_year' => fn() => AcademicYear::query()->where('is_active', true)->first(),
+            'checkFee' => fn() => $request->user() && $request->user()->student
+                ? FeeGroup::query()
+                ->where('student_id', auth()->user()->student->id)
+                ->where('academic_year_id', activeAcademicYear()->id)
+                ->where('semester', auth()->user()->student()->semester)
+                ->where('status', FeeStatus::SUCCESS->value) : null
+
         ];
     }
 }
